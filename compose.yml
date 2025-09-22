@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:17
+    container_name: db-url-shortene
+    environment:
+      POSTGRES_DB: db-url-shortene
+      POSTGRES_USER: ${ENV_DB_USER}
+      POSTGRES_PASSWORD: ${ENV_DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - url-shortene:/var/lib/postgresql/data
+
+volumes:
+  url-shortene:
