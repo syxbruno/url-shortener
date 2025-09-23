@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface LinkRepository extends JpaRepository<Link, Long> {
 
   Optional<Link> findByUrl(String url);
+  Optional<Link> findByShortUrl(String shortUrl);
+  boolean existsByShortUrl(String code);
 }

@@ -1,9 +1,11 @@
 package com.syxbruno.url_shortener.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,11 +21,16 @@ public class Link {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private String shortUrl;
+  @Column(unique = true)
   private String url;
+  @Column(unique = true)
+  private String shortUrl;
+  private LocalDateTime expiry;
 
-  public Link(Link url, String shortUrl) {
+  public Link(String url, String shortUrl, LocalDateTime expiry) {
 
-
+    this.url = url;
+    this.shortUrl = shortUrl;
+    this.expiry = expiry;
   }
 }
