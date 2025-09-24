@@ -4,9 +4,11 @@ import com.syxbruno.url_shortener.dto.UrlRequest;
 import com.syxbruno.url_shortener.model.Link;
 import com.syxbruno.url_shortener.reposiory.LinkRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -39,5 +41,16 @@ public class LinkService {
     return repository.findByShortUrl(shortUrl)
         .map(url -> "redirect:" + url.getUrl())
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Short url not found"));
+  }
+
+  @Scheduled(cron = "0 0 12 * * *")
+  public void verifyExpiry() {
+
+    List<Link> expired = repository.findByExpiryBefore(LocalDateTime.now());
+
+    if (!expired.isEmpty()) {
+
+      repository.deleteAll(expired);
+    }
   }
 }
