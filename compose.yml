@@ -11,5 +11,17 @@ services:
     volumes:
       - url-shortener:/var/lib/postgresql/data
 
+  api:
+    image: url-shortener
+    container_name: url-shortener-api
+    ports:
+      - "8080:8080"
+    environment:
+      - ENV_DB_URL=${ENV_DB_URL}
+      - ENV_DB_USER=${ENV_DB_USER}
+      - ENV_DB_PASSWORD=${ENV_DB_PASSWORD}
+    depends_on:
+      - db
+
 volumes:
   url-shortener:
